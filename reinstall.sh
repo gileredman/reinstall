@@ -3,9 +3,9 @@
 # shellcheck disable=SC2086
 
 set -eE
-confhome=https://raw.githubusercontent.com/bin456789/reinstall/main
-confhome_cn=https://cnb.cool/bin456789/reinstall/-/git/raw/main
-# confhome_cn=https://www.ghproxy.cc/https://raw.githubusercontent.com/bin456789/reinstall/main
+confhome=https://raw.githubusercontent.com/gileredman/reinstall/main
+confhome_cn=https://cnb.cool/gileredman/reinstall/-/git/raw/main
+# confhome_cn=https://www.ghproxy.cc/https://raw.githubusercontent.com/gileredman/reinstall/main
 
 # 默认密码
 DEFAULT_PASSWORD=123@@@
@@ -81,7 +81,7 @@ Usage: $reinstall_____ anolis      7|8|23
                        [--rdp-port   PORT]
                        [--add-driver INF_OR_DIR]
 
-Manual: https://github.com/bin456789/reinstall
+Manual: https://github.com/gileredman/reinstall
 
 EOF
     exit 1
@@ -3461,7 +3461,7 @@ EOF
     # Connecting to raw.githubusercontent.com (185.199.108.133:443)
     # 60C0BB2FFAFF0000:error:0A00009C:SSL routines:ssl3_get_record:http request:ssl/record/ssl3_record.c:345:
     # ssl_client: SSL_connect
-    # wget: bad header line: �
+    # wget: bad header line:  
     insert_into_file init before '^exec switch_root' <<EOF
         # trans
         # echo "wget --no-check-certificate -O- $confhome/trans.sh | /bin/ash" >\$sysroot/etc/local.d/trans.start
