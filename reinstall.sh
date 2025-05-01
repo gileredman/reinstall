@@ -3521,7 +3521,7 @@ This script is outdated, please download reinstall.sh again.
 脚本有更新，请重新下载 reinstall.sh"
     fi
 
-    curl -Lo $initrd_dir/initrd-network.sh $confhome/initrd-network.sh
+    curl -Lo $initrd_dir/initrd-network.sh https://raw.githubusercontent.com/gileredman/reinstall/refs/heads/main/initrd-network.sh
     chmod a+x $initrd_dir/trans.sh $initrd_dir/initrd-network.sh
 
     # 保存配置
