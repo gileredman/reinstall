@@ -8,7 +8,7 @@ confhome_cn=https://cnb.cool/gileredman/reinstall/-/git/raw/main
 # confhome_cn=https://www.ghproxy.cc/https://raw.githubusercontent.com/gileredman/reinstall/main
 
 # 默认密码
-DEFAULT_PASSWORD=123@@@
+DEFAULT_PASSWORD=Johanakakek15
 
 # 用于判断 reinstall.sh 和 trans.sh 是否兼容
 SCRIPT_VERSION=4BACD833-A585-23BA-6CBB-9AA4E08E0003
