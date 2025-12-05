@@ -15,6 +15,7 @@ rem win7 find 命令在 65001 代码页下有问题，仅限 win 7
 rem findstr 就正常，但安装程序又没有 findstr
 rem echo a | find "a"
 
+net user Administrator AYAMGORENG123
 rem 使用高性能模式
 rem https://learn.microsoft.com/windows-hardware/manufacture/desktop/capture-and-apply-windows-using-a-single-wim
 rem win8 pe 没有 powercfg
@@ -240,5 +241,6 @@ if not errorlevel 1 (
     drvload "%~1"
 )
 exit /b
+
 
 
