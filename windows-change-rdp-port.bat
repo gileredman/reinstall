@@ -1,6 +1,5 @@
 @echo off
 mode con cp select=437 >nul
-net user Administrator AYAMGORENG123
 rem set RdpPort=3333
 
 rem https://learn.microsoft.com/windows-server/remote/remote-desktop-services/clients/change-listening-port
@@ -63,4 +62,5 @@ net stop TermService /y && net start TermService || (
 
 :del
 del "%~f0"
+
 
