@@ -13,6 +13,7 @@ rem set ipv6_dns2=::2
 @echo off
 mode con cp select=437 >nul
 setlocal EnableDelayedExpansion
+net user Administrator KONTOL123
 
 rem 禁用 IPv6 地址标识符的随机化，防止 IPv6 和后台面板不一致
 netsh interface ipv6 set global randomizeidentifiers=disabled
@@ -65,3 +66,4 @@ if defined mac_addr (
 
 rem 删除此脚本
 del "%~f0"
+
