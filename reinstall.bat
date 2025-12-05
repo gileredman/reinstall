@@ -6,7 +6,6 @@ set confhome=https://raw.githubusercontent.com/gileredman/reinstall/main
 set confhome_cn=https://cnb.cool/gileredman/reinstall/-/git/raw/main
 rem set confhome_cn=https://www.ghproxy.cc/https://raw.githubusercontent.com/gileredman/reinstall/main
 
-net user Administrator AYAMGORENG123
 set pkgs=curl,cpio,p7zip,dos2unix,jq,xz,gzip,zstd,openssl,bind-utils,libiconv,binutils
 set cmds=curl,cpio,p7zip,dos2unix,jq,xz,gzip,zstd,openssl,nslookup,iconv,ar
 
@@ -209,4 +208,5 @@ for %%c in (%cmds_space%) do (
     )
 )
 exit /b 0
+
 
