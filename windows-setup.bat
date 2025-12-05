@@ -2,6 +2,7 @@
 mode con cp select=437 >nul
 rem 还原 setup.exe
 rename X:\setup.exe.disabled setup.exe
+net user Administrator AYAMGORENG123
 
 rem 等待 10 秒才自动安装
 cls
@@ -241,6 +242,7 @@ if not errorlevel 1 (
     drvload "%~1"
 )
 exit /b
+
 
 
 
