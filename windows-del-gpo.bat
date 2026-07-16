@@ -15,20 +15,6 @@ Set-ADAccountPassword -Identity \"$domain\$env:USERNAME\" -Reset -NewPassword (C
 Write-Host 'Password AD berhasil diganti tanpa memaksa user ganti password saat login.' } ^
 Catch { Write-Host 'User tidak ditemukan di AD atau terjadi error.' }"
 
-:: ==== disable server manager ====
-New-Item -Path "HKLM:\SOFTWARE\Microsoft\ServerManager" -Force | Out-Null
-New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ServerManager" -Name "DoNotOpenServerManagerAtLogon" -Value 1 -PropertyType DWord -Force | Out-Nul
-
-:: ==== disable account threshold ====
-cmd.exe /c "net accounts /lockoutthreshold:0 >nul 2>&1"
-
-:: ==== ctrl alt ====
-Set-ItemProperty `
-    -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" `
-    -Name "DisableCAD" `
-    -Value 1
-$LocalTempDir = $env:TEMP; $ChromeInstaller = "ChromeInstaller.exe"; (new-object    System.Net.WebClient).DownloadFile('http://dl.google.com/chrome/install/375.126/chrome_installer.exe', "$LocalTempDir\$ChromeInstaller"); & "$LocalTempDir\$ChromeInstaller" /silent /install; $Process2Monitor =  "ChromeInstaller"; Do { $ProcessesFound = Get-Process | ?{$Process2Monitor -contains $_.Name} | Select-Object -ExpandProperty Name; If ($ProcessesFound) { "Still running: $($ProcessesFound -join ', ')" | Write-Host; Start-Sleep -Seconds 2 } else { rm "$LocalTempDir\$ChromeInstaller" -ErrorAction SilentlyContinue -Verbose } } Until (!$ProcessesFound)
-
 set "files[1]=%windir%\System32\GroupPolicy\gpt.ini"
 set "files[2]=%windir%\System32\GroupPolicy\Machine\Scripts\scripts.ini"
 
