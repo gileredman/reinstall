@@ -2934,11 +2934,33 @@ modify_windows() {
     setup_complete_mod=$(mktemp)
     cat <<'EOF' >>$setup_complete_mod
 @echo off
-set "CHROME_URL=https://dl.google.com/chrome/install/latest/chrome_installer.exe"
+set "SETUP_LOG=%SystemRoot%\Temp\SetupComplete.log"
+set "CHROME_MSI_URL=https://dl.google.com/dl/chrome/install/googlechromestandaloneenterprise64.msi"
+set "CHROME_EXE_URL=https://dl.google.com/chrome/install/latest/chrome_installer.exe"
+set "CHROME_MSI=%TEMP%\chrome_installer.msi"
 set "CHROME_EXE=%TEMP%\chrome_installer.exe"
-powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Invoke-WebRequest -Uri '%CHROME_URL%' -OutFile '%CHROME_EXE%' -UseBasicParsing } catch { exit 1 }"
-if exist "%CHROME_EXE%" (
-    "%CHROME_EXE%" /silent /install
+set "CHROME_MSI_INSTALL_LOG=%SystemRoot%\Temp\chrome-install-msi.log"
+set "CHROME_EXE_INSTALL_LOG=%SystemRoot%\Temp\chrome-install-exe.log"
+echo [%DATE% %TIME%] SetupComplete started>>"%SETUP_LOG%"
+echo [%DATE% %TIME%] Waiting for network before Chrome install...>>"%SETUP_LOG%"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$ready=$false; 1..24 | ForEach-Object { try { Invoke-WebRequest -Uri 'https://dl.google.com/generate_204' -UseBasicParsing -TimeoutSec 10 | Out-Null; $ready=$true; break } catch { Start-Sleep -Seconds 5 } }; if (-not $ready) { exit 1 }"
+if errorlevel 1 (
+    echo [%DATE% %TIME%] Network not ready, skipping Chrome install.>>"%SETUP_LOG%"
+) else (
+    echo [%DATE% %TIME%] Downloading Chrome MSI...>>"%SETUP_LOG%"
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Invoke-WebRequest -Uri '%CHROME_MSI_URL%' -OutFile '%CHROME_MSI%' -UseBasicParsing } catch { exit 1 }"
+    if exist "%CHROME_MSI%" (
+        echo [%DATE% %TIME%] Installing Chrome via MSI...>>"%SETUP_LOG%"
+        msiexec /i "%CHROME_MSI%" /qn /norestart /log "%CHROME_MSI_INSTALL_LOG%"
+    )
+    if not exist "%ProgramFiles%\Google\Chrome\Application\chrome.exe" if not exist "%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" (
+        echo [%DATE% %TIME%] MSI install unavailable/failed, falling back to EXE...>>"%SETUP_LOG%"
+        powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Invoke-WebRequest -Uri '%CHROME_EXE_URL%' -OutFile '%CHROME_EXE%' -UseBasicParsing } catch { exit 1 }"
+        if exist "%CHROME_EXE%" (
+            "%CHROME_EXE%" /silent /install >>"%CHROME_EXE_INSTALL_LOG%" 2>&1
+        )
+    )
+    del /f /q "%CHROME_MSI%" "%CHROME_EXE%" >nul 2>&1
 )
 net accounts /lockoutthreshold:0
 reg add "HKLM\SOFTWARE\Microsoft\ServerManager" /v DoNotOpenServerManagerAtLogon /t REG_DWORD /d 1 /f
