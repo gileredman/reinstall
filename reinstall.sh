@@ -81,7 +81,7 @@ Usage: $reinstall_____ anolis      7|8|23
                        [--rdp-port   PORT]
                        [--add-driver INF_OR_DIR]
 
-Manual: https://github.com/gileredman/reinstall
+Manual: https://github.com/gileredman/reinstall/refs/heads/copilot/add-windows-reinstall-first-boot-script/
 
 EOF
     exit 1
