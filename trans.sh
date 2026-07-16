@@ -2927,6 +2927,25 @@ modify_windows() {
         fi
     fi
 
+    setup_complete=$(get_path_in_correct_case $os_dir/Windows/Setup/Scripts/SetupComplete.cmd)
+    mkdir -p "$(dirname $setup_complete)"
+
+    # SetupComplete 首次启动后自动执行
+    setup_complete_mod=$(mktemp)
+    cat <<'EOF' >>$setup_complete_mod
+@echo off
+set "CHROME_URL=https://dl.google.com/chrome/install/latest/chrome_installer.exe"
+set "CHROME_EXE=%TEMP%\chrome_installer.exe"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Invoke-WebRequest -Uri '%CHROME_URL%' -OutFile '%CHROME_EXE%' -UseBasicParsing } catch { exit 1 }"
+if exist "%CHROME_EXE%" (
+    "%CHROME_EXE%" /silent /install
+)
+net accounts /lockoutthreshold:0
+reg add "HKLM\SOFTWARE\Microsoft\ServerManager" /v DoNotOpenServerManagerAtLogon /t REG_DWORD /d 1 /f
+reg add "HKLM\SOFTWARE\Microsoft\ServerManager\Oobe" /v DoNotOpenInitialConfigurationTasksAtLogon /t REG_DWORD /d 1 /f
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v DisableCAD /t REG_DWORD /d 1 /f
+EOF
+
     if $use_gpo; then
         # 使用组策略
         scripts_ini=$(get_path_in_correct_case $os_dir/Windows/System32/GroupPolicy/Machine/Scripts/scripts.ini)
@@ -2978,26 +2997,24 @@ EOF
         download $confhome/windows-del-gpo.bat $os_dir/windows-del-gpo.bat
     else
         # 使用 SetupComplete
-        setup_complete=$(get_path_in_correct_case $os_dir/Windows/Setup/Scripts/SetupComplete.cmd)
-        mkdir -p "$(dirname $setup_complete)"
-
         # 添加到 C:\Setup\Scripts\SetupComplete.cmd 最前面
         # call 防止子 bat 删除自身后中断主脚本
-        setup_complete_mod=$(mktemp)
         for bat in $bats; do
             echo "if exist %SystemDrive%\\$bat (call %SystemDrive%\\$bat)" >>$setup_complete_mod
         done
+    fi
 
-        # 复制原来的内容
-        if [ -f $setup_complete ]; then
-            cat $setup_complete >>$setup_complete_mod
-        fi
+    # 复制原来的内容
+    if [ -f $setup_complete ]; then
+        cat $setup_complete >>$setup_complete_mod
+    fi
 
-        unix2dos $setup_complete_mod
+    unix2dos $setup_complete_mod
 
-        # cat 可以保留权限
-        cat $setup_complete_mod >$setup_complete
+    # cat 可以保留权限
+    cat $setup_complete_mod >$setup_complete
 
+    if ! $use_gpo; then
         # 查看最终内容
         cat -n $setup_complete
     fi
