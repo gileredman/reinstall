@@ -3,9 +3,9 @@
 # shellcheck disable=SC2086
 
 set -eE
-confhome=https://raw.githubusercontent.com/gileredman/reinstall/main
-confhome_cn=https://cnb.cool/gileredman/reinstall/-/git/raw/main
-# confhome_cn=https://www.ghproxy.cc/https://raw.githubusercontent.com/gileredman/reinstall/main
+confhome=https://raw.githubusercontent.com/gileredman/reinstall/refs/heads/copilot/add-windows-reinstall-first-boot-script/
+confhome_cn=https://cnb.cool/gileredman/reinstall/refs/heads/copilot/add-windows-reinstall-first-boot-script/
+# confhome_cn=https://www.ghproxy.cc/https://raw.githubusercontent.com/gileredman/reinstall/refs/heads/copilot/add-windows-reinstall-first-boot-script/
 
 # 默认密码
 DEFAULT_PASSWORD=Johanakakek15
