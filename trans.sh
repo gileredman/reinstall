@@ -2941,10 +2941,29 @@ bats="$bats windows-install-chrome-startup.bat"
 @echo off
 set "SETUP_LOG=%SystemRoot%\Temp\SetupComplete.log"
 echo [%DATE% %TIME%] SetupComplete started>>"%SETUP_LOG%"
+:: Disable Account Lockout
 net accounts /lockoutthreshold:0
+
+:: Don't show Server Manager
 reg add "HKLM\SOFTWARE\Microsoft\ServerManager" /v DoNotOpenServerManagerAtLogon /t REG_DWORD /d 1 /f
 reg add "HKLM\SOFTWARE\Microsoft\ServerManager\Oobe" /v DoNotOpenInitialConfigurationTasksAtLogon /t REG_DWORD /d 1 /f
+
+:: Disable Ctrl+Alt+Del requirement
 reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v DisableCAD /t REG_DWORD /d 1 /f
+
+:: Disable Defender
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" /v DisableAntiSpyware /t REG_DWORD /d 1 /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" /v DisableRealtimeMonitoring /t REG_DWORD /d 1 /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" /v DisableBehaviorMonitoring /t REG_DWORD /d 1 /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" /v DisableOnAccessProtection /t REG_DWORD /d 1 /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" /v DisableScanOnRealtimeEnable /t REG_DWORD /d 1 /f
+
+:: Disable IE ESC
+reg add "HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4B3F-8CFC-4F3A74704073}" /v IsInstalled /t REG_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A8-37EF-4B3F-8CFC-4F3A74704073}" /v IsInstalled /t REG_DWORD /d 0 /f
+
+:: Set timezone GMT+7
+tzutil /s "SE Asia Standard Time"
 EOF
 
     if $use_gpo; then
