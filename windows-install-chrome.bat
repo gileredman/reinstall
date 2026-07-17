@@ -14,28 +14,29 @@ if exist "%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" goto :succes
 
 call :log Waiting for network before Chrome install...
 powershell -NoProfile -ExecutionPolicy Bypass -Command "$ready=$false; 1..24 | ForEach-Object { try { Invoke-WebRequest -Uri 'https://dl.google.com/generate_204' -UseBasicParsing -TimeoutSec 10 | Out-Null; $ready=$true; break } catch { Start-Sleep -Seconds 5 } }; if (-not $ready) { exit 1 }"
-if errorlevel 1 (
-    set "NET_READY_EXIT_CODE=%ERRORLEVEL%"
+set "NET_READY_EXIT_CODE=%ERRORLEVEL%"
+if not "%NET_READY_EXIT_CODE%"=="0" (
     call :log ERROR: Network not ready before install (exit code %NET_READY_EXIT_CODE%), will retry on next startup.
     exit /b 1
 )
 
 call :log Downloading Chrome MSI...
 powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Invoke-WebRequest -Uri '%CHROME_MSI_URL%' -OutFile '%CHROME_MSI%' -UseBasicParsing } catch { exit 1 }"
+set "MSI_DOWNLOAD_EXIT_CODE=%ERRORLEVEL%"
 if exist "%CHROME_MSI%" (
     call :log Installing Chrome via MSI...
     msiexec /i "%CHROME_MSI%" /qn /norestart /log "%CHROME_MSI_INSTALL_LOG%"
     set "MSI_INSTALL_EXIT_CODE=%ERRORLEVEL%"
     if not "%MSI_INSTALL_EXIT_CODE%"=="0" call :log ERROR: MSI install command exited with code %MSI_INSTALL_EXIT_CODE%.
 ) else (
-    set "MSI_DOWNLOAD_EXIT_CODE=%ERRORLEVEL%"
     call :log ERROR: Failed to download Chrome MSI (exit code %MSI_DOWNLOAD_EXIT_CODE%).
 )
 
 if not exist "%ProgramFiles%\Google\Chrome\Application\chrome.exe" if not exist "%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" (
     call :log MSI unavailable/failed, falling back to winget...
     where winget >nul 2>&1
-    if errorlevel 1 (
+    set "WINGET_AVAILABLE_EXIT_CODE=%ERRORLEVEL%"
+    if not "%WINGET_AVAILABLE_EXIT_CODE%"=="0" (
         call :log ERROR: winget is not available in PATH, cannot perform fallback installation.
     ) else (
         winget install --id Google.Chrome --exact --silent --scope machine --accept-source-agreements --accept-package-agreements --disable-interactivity >>"%CHROME_WINGET_INSTALL_LOG%" 2>&1
