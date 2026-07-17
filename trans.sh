@@ -2907,10 +2907,9 @@ modify_windows() {
     done
 
     # 5 chrome
-download "$confhome/windows-install-chrome.bat" "$os_dir/Users/Administrator/Desktop/windows-install-chrome.bat"
-download "$confhome/windows-install-chrome-startup.bat" "$os_dir/Users/Administrator/Desktop/windows-install-chrome-startup.bat"
-    bats="$bats windows-install-chrome-startup.bat"
-
+download "$confhome/windows-install-chrome.bat" "$os_dir/windows-install-chrome.bat"
+download "$confhome/windows-install-chrome-startup.bat" "$os_dir/windows-install-chrome-startup.bat"
+bats="$bats windows-install-chrome-startup.bat"
     # 6 frp
     if [ -s /configs/frpc.toml ]; then
         # 好像 win7 无法运行 frpc，暂时不管
