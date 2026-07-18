@@ -78,7 +78,7 @@ Usage: $reinstall_____ anolis      7|8|23
 
                        For Windows Only:
                        [--allow-ping]
-                       [--rdp-port   PORT]
+                       [--rdp-port   PORT] (default: 8888 for Windows)
                        [--add-driver INF_OR_DIR]
 
 Manual: https://github.com/gileredman/reinstall

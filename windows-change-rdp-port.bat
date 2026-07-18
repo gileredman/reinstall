@@ -23,6 +23,11 @@ rem 全部版本都有: program=%SystemRoot%\system32\svchost.exe service=TermSe
 rem win7 还有:    program=System                            service=
 rem 以下为并集
 for %%a in (TCP, UDP) do (
+    netsh advfirewall firewall delete rule ^
+        name="Remote Desktop - Custom Port (%%a-In)" ^
+        protocol=%%a ^
+        localport=%RdpPort% >nul 2>nul
+
     netsh advfirewall firewall add rule ^
         name="Remote Desktop - Custom Port (%%a-In)" ^
         dir=in ^
@@ -62,5 +67,4 @@ net stop TermService /y && net start TermService || (
 
 :del
 del "%~f0"
-
 

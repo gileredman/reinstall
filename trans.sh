@@ -2866,6 +2866,9 @@ modify_windows() {
     os_dir=$1
     info "Modify Windows"
 
+    # 默认自动改为 8888，用户可通过 --rdp-port 覆盖
+    [ -n "$rdp_port" ] || rdp_port=8888
+
     # https://learn.microsoft.com/windows-hardware/manufacture/desktop/windows-setup-states
     # https://learn.microsoft.com/troubleshoot/azure/virtual-machines/reset-local-password-without-agent
     # https://learn.microsoft.com/windows-hardware/manufacture/desktop/add-a-custom-script-to-windows-setup
@@ -6393,6 +6396,7 @@ EOF
     # 修改应答文件
     download $confhome/windows.xml /tmp/autounattend.xml
     locale=$(get_selected_image_prop 'Default Language')
+    [ -n "$rdp_port" ] || rdp_port=8888
     use_default_rdp_port=$(is_need_change_rdp_port && echo false || echo true)
     password_base64=$(get_password_windows_administrator_base64)
     # 7601.24214.180801-1700.win7sp1_ldr_escrow_CLIENT_ULTIMATE_x64FRE_en-us.iso Image Name 为空
