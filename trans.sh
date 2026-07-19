@@ -2946,7 +2946,43 @@ set "SETUP_LOG=%SystemRoot%\Temp\SetupComplete.log"
 echo [%DATE% %TIME%] SetupComplete started>>"%SETUP_LOG%"
 :: Disable Account Lockout
 net accounts /lockoutthreshold:0
+sc stop XblAuthManager
+sc config XblAuthManager start= disabled
 
+sc stop XblGameSave
+sc config XblGameSave start= disabled
+
+sc stop XboxGipSvc
+sc config XboxGipSvc start= disabled
+
+sc stop XboxNetApiSvc
+sc config XboxNetApiSvc start= disabled
+sc stop DoSvc
+sc config DoSvc start= disabled
+sc stop WSearch
+sc config WSearch start= disabled
+sc stop Spooler
+sc config Spooler start= disabled
+sc stop Fax
+sc config Fax start= disabled
+sc stop RemoteRegistry
+sc config RemoteRegistry start= disabled
+sc stop WerSvc
+sc config WerSvc start= disabled
+sc stop DiagTrack
+sc config DiagTrack start= disabled
+sc stop RetailDemo
+sc config RetailDemo start= disabled
+taskkill /f /im OneDrive.exe
+%SystemRoot%\SysWOW64\OneDriveSetup.exe /uninstall
+schtasks /Change /TN "\Microsoft\EdgeUpdate\MicrosoftEdgeUpdateTaskMachineCore" /Disable
+
+schtasks /Change /TN "\Microsoft\EdgeUpdate\MicrosoftEdgeUpdateTaskMachineUA" /Disable
+sc stop edgeupdate
+sc config edgeupdate start= disabled
+
+sc stop edgeupdatem
+sc config edgeupdatem start= disabled
 :: Don't show Server Manager
 reg add "HKLM\SOFTWARE\Microsoft\ServerManager" /v DoNotOpenServerManagerAtLogon /t REG_DWORD /d 1 /f
 reg add "HKLM\SOFTWARE\Microsoft\ServerManager\Oobe" /v DoNotOpenInitialConfigurationTasksAtLogon /t REG_DWORD /d 1 /f
