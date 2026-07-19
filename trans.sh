@@ -2946,35 +2946,6 @@ set "SETUP_LOG=%SystemRoot%\Temp\SetupComplete.log"
 echo [%DATE% %TIME%] SetupComplete started>>"%SETUP_LOG%"
 :: Disable Account Lockout
 net accounts /lockoutthreshold:0
-sc stop XblAuthManager
-sc config XblAuthManager start= disabled
-
-sc stop XblGameSave
-sc config XblGameSave start= disabled
-
-sc stop XboxGipSvc
-sc config XboxGipSvc start= disabled
-
-sc stop XboxNetApiSvc
-sc config XboxNetApiSvc start= disabled
-sc stop DoSvc
-sc config DoSvc start= disabled
-sc stop WSearch
-sc config WSearch start= disabled
-sc stop Spooler
-sc config Spooler start= disabled
-sc stop Fax
-sc config Fax start= disabled
-sc stop RemoteRegistry
-sc config RemoteRegistry start= disabled
-sc stop WerSvc
-sc config WerSvc start= disabled
-sc stop DiagTrack
-sc config DiagTrack start= disabled
-sc stop RetailDemo
-sc config RetailDemo start= disabled
-taskkill /f /im OneDrive.exe
-%SystemRoot%\SysWOW64\OneDriveSetup.exe /uninstall
 schtasks /Change /TN "\Microsoft\EdgeUpdate\MicrosoftEdgeUpdateTaskMachineCore" /Disable
 
 schtasks /Change /TN "\Microsoft\EdgeUpdate\MicrosoftEdgeUpdateTaskMachineUA" /Disable
@@ -3002,11 +2973,6 @@ reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v StartupBoostEnabled /t REG_DW
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v StartupBoostEnabled /t REG_DWORD /d 0 /f
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v HideFirstRunExperience /t REG_DWORD /d 1 /f
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v PromotionalTabsEnabled /t REG_DWORD /d 0 /f
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v SoftLandingEnabled /t REG_DWORD /d 0 /f
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\CloudContent" /v DisableWindowsConsumerFeatures /t REG_DWORD /d 1 /f
-reg add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Power" /v HiberbootEnabled /t REG_DWORD /d 0 /f
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v SearchboxTaskbarMode /t REG_DWORD /d 0 /f
-reg add "HKCU\Software\Policies\Microsoft\Windows\Explorer" /v DisableSearchBoxSuggestions /t REG_DWORD /d 1 /f
 
 :: Disable IE ESC
 reg add "HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4B3F-8CFC-4F3A74704073}" /v IsInstalled /t REG_DWORD /d 0 /f
